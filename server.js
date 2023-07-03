@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const passport = require('passport');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const session = require('express-session');
 const User = require('./models/User');
+const swaggerDocument = require('./swagger.yaml');
 
 const app = express();
 
@@ -19,9 +19,9 @@ app.use(cors());
 passport.use(
   new TwitterStrategy(
     {
-      consumerKey: '<your_consumer_key>',
-      consumerSecret: '<your_consumer_secret>',
-      callbackURL: '<your_callback_url>'
+      consumerKey: 'KNWouMHGOUVtYaKawaxd8m8JZ',
+      consumerSecret: 'CbVZEYBiovKvsRHEkAFAAP3ci45GLRzAbT5vIRX6nnNlPSCUEd',
+      callbackURL: 'http://localhost:3030/auth/twitter/callback'
     },
     async (token, tokenSecret, profile, done) => {
       try {
@@ -65,33 +65,15 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-
 // MongoDB connection
-const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://nanakwamedickson:bacteria1952@cluster0.hhph3e6.mongodb.net/';
+const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://nanakwamedickson:bacteria1952@cluster0.hhph3e6.mongodb.net/library';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log('MongoDB connection error: ', err));
 
 // Swagger API documentation
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Library API',
-      version: '1.0.0',
-      description: 'API endpoints for managing books and users in a library',
-    },
-    security: [
-      {
-        TwitterAuth: []
-      }
-    ],
-  },
-  apis: ['./routes/users.js', './routes/books.js'],
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 // Routes
 const usersRoutes = require('./routes/users');
