@@ -1,135 +1,117 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers/users');
+const BookController = require('../controllers/books');
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         id:
- *           type: string
- *           description: The user ID.
- *         name:
- *           type: string
- *           description: The user's name.
- *         email:
- *           type: string
- *           description: The user's email address.
- */
-
-/**
- * @swagger
- * /users:
+ * /api/books:
  *   get:
- *     summary: Get all users.
+ *     summary: Get all books
  *     responses:
  *       200:
- *         description: Success.
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/Book'
  */
-router.get('/', UserController.getAllUsers);
+router.get('/', BookController.getAllBooks);
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/books/{id}:
  *   get:
- *     summary: Get a user by ID.
+ *     summary: Get a book by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The user ID.
+ *         description: Book ID
  *     responses:
  *       200:
- *         description: Success.
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Book'
  *       404:
- *         description: User not found.
+ *         description: Book not found
  */
-router.get('/:id', UserController.getUserById);
+router.get('/:id', BookController.getBookById);
 
 /**
  * @swagger
- * /users:
+ * /api/books:
  *   post:
- *     summary: Create a new user.
+ *     summary: Create a new book
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Book'
  *     responses:
  *       201:
- *         description: User created successfully.
+ *         description: Created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Book'
  */
-router.post('/', UserController.createUser);
+router.post('/', BookController.createBook);
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/books/{id}:
  *   put:
- *     summary: Update a user by ID.
+ *     summary: Update a book by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The user ID.
+ *         description: Book ID
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/Book'
  *     responses:
  *       200:
- *         description: User updated successfully.
+ *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: '#/components/schemas/Book'
  *       404:
- *         description: User not found.
+ *         description: Book not found
  */
-router.put('/:id', UserController.updateUser);
+router.put('/:id', BookController.updateBook);
 
 /**
  * @swagger
- * /users/{id}:
+ * /api/books/{id}:
  *   delete:
- *     summary: Delete a user by ID.
+ *     summary: Delete a book by ID
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: The user ID.
+ *         description: Book ID
  *     responses:
  *       200:
- *         description: User deleted successfully.
+ *         description: Book deleted successfully
  *       404:
- *         description: User not found.
+ *         description: Book not found
  */
-router.delete('/:id', UserController.deleteUser);
+router.delete('/:id', BookController.deleteBook);
 
 module.exports = router;
